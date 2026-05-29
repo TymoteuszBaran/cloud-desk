@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: clouddesk_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: clouddesk_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # FastAPI
+  web:
+    build: .
+    container_name: clouddesk_api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://admin:supersecret@db:5432/clouddesk_db
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
