@@ -13,9 +13,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # FastAPI
   web:
-    build: .
+    image: ${DOCKER_IMAGE_NAME}
     container_name: clouddesk_api
     ports:
       - "8000:8000"
