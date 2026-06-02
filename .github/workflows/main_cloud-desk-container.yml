@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'cloud-desk-container'
           slot-name: 'Production'
-          images: 'DOCKER|${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}'
+          images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}'
