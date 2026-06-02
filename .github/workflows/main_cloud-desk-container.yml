@@ -24,7 +24,7 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v3
         with:
-          registry: index.docker.io/
+          #registry: index.docker.io/
           username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}
           password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_4A7686975B0D46768C36020D3DF909A8 }}
 
@@ -33,7 +33,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}
+          tags: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}
           file: ./Dockerfile
 
   deploy:
@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'cloud-desk-container'
           slot-name: 'Production'
-          images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}'
+          images: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_53B2F866C1C2436D8CD47DEF6CAE83BE }}/cloud-desk:${{ github.sha }}'
