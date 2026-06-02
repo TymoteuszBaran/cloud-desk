@@ -50,6 +50,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - DEFAULT_EMAIL=t_baran@interia.pl
+      - NGINX_PROXY_CONTAINER=nginx-proxy
     restart: always
     depends_on:
       - nginx-proxy
