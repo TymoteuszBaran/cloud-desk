@@ -12,16 +12,48 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
   web:
-    image: ${DOCKER_IMAGE_NAME}
+    build: .
     container_name: clouddesk_api
-    ports:
-      - "8000:8000"
     environment:
       - DATABASE_URL=postgresql+psycopg://admin:supersecret@db:5432/clouddesk_db
+      - VIRTUAL_HOST=20-215-224-15.sslip.io
+      - VIRTUAL_PORT=8000
+      - LETSENCRYPT_HOST=20-215-224-15.sslip.io
+      - LETSENCRYPT_EMAIL=t_baran@interia.pl
     depends_on:
       - db
+nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: always
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DEFAULT_EMAIL=t_baran@interia.pl
+    restart: always
+    depends_on:
+      - nginx-proxy
 
 volumes:
   postgres_data:
+  certs:
+  vhost:
+  html:
